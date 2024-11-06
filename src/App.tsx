@@ -1,3 +1,15 @@
+import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { RouterProvider } from 'react-router-dom'
+import { Toaster } from 'sonner'
+
+import { router } from './routes'
+
 export function App() {
-  return <></>
+  return (
+    <HelmetProvider>
+      <Helmet titleTemplate="%s | Marketplace" />
+      <Toaster richColors />
+      <RouterProvider router={router} />
+    </HelmetProvider>
+  )
 }
