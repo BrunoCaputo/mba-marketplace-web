@@ -33,6 +33,36 @@ export default {
         danger: '#DC3545',
         success: '#28A745',
       },
+      fontSize: {
+        // Title
+        title: {
+          lg: ['1.75rem', { fontWeight: 'bold', lineHeight: '1.2' }],
+          md: ['1.5rem', { fontWeight: 'bold', lineHeight: '1.2' }],
+          sm: ['1.125rem', { fontWeight: 'bold', lineHeight: '1.2' }],
+        },
+
+        // Subtitle
+        subtitle: ['1rem', { fontWeight: 'semibold', lineHeight: '1.2' }],
+
+        // Body
+        body: {
+          md: ['1rem', { fontWeight: 'regular', lineHeight: '1.2' }],
+          sm: ['0.875rem', { fontWeight: 'regular', lineHeight: '1.2' }],
+          xs: ['0.75rem', { fontWeight: 'regular', lineHeight: '1.2' }],
+        },
+
+        // Label
+        label: {
+          md: ['0.75rem', { fontWeight: 'medium', lineHeight: '1.2' }],
+          sm: ['0.625rem', { fontWeight: 'medium', lineHeight: '1.2' }],
+        },
+
+        // Action
+        action: {
+          md: ['1rem', { fontWeight: 'medium', lineHeight: '1.2' }],
+          sm: ['0.875rem', { fontWeight: 'medium', lineHeight: '1.2' }],
+        },
+      },
     },
   },
   plugins: [],
