@@ -18,6 +18,13 @@ psd
 thumb
 sketch
 
+# Build
+dist/
+
+# Env
+.env.*
+!.env.template
+
 ### VisualStudioCode ###
 .vscode/*
 

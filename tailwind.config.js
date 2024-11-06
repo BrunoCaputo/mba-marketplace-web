@@ -8,13 +8,24 @@ export default {
         sans: ['Poppins', '"DM Sans"', 'sans-serif'],
       },
       colors: {
-        'orange-base': '#F24D0D',
-        'orange-dark': '#C43C08',
-        'blue-light': '#D7EFF9',
-        'blue-base': '#5EC5FD',
-        'blue-dark': '#009CF0',
+        // Orange
+        orange: {
+          base: '#F24D0D',
+          dark: '#C43C08',
+        },
+
+        // Blue
+        blue: {
+          light: '#D7EFF9',
+          base: '#5EC5FD',
+          dark: '#009CF0',
+        },
+
+        // Shape
         surface: '#FBF4F4',
         shape: '#F5EAEA',
+
+        // Grayscale
         gray: {
           100: '#ADADAD',
           200: '#949494',
@@ -22,8 +33,12 @@ export default {
           400: '#3D3D3D',
           500: '#1D1D1D',
         },
+
+        // Semantic
         danger: '#DC3545',
         success: '#28A745',
+
+        // Shadcn UI
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
