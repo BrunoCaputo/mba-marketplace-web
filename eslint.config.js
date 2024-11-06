@@ -1,17 +1,17 @@
 import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import prettierRecommended from "eslint-plugin-prettier/recommended";
-import standard from "eslint-config-standard";
 import parser from "@typescript-eslint/parser";
+import standard from "eslint-config-standard";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import eslintReact from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import prettierRecommended from "eslint-plugin-prettier/recommended";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  { ignores: ["dist", "node_modules"] },
   {
     extends: [
       js.configs.recommended,
@@ -88,6 +88,5 @@ export default tseslint.config(
         [import("@typescript-eslint/parser")]: [".ts", ".tsx", ".d.ts"],
       },
     },
-    ignores: ["node_modules"],
   },
 );
