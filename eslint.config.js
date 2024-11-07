@@ -46,10 +46,6 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
       'simple-import-sort/imports': 'error',
       'prettier/prettier': [
         'error',
@@ -79,6 +75,7 @@ export default tseslint.config(
       'jsx-a11y/role-has-required-aria-props': 'warn',
       'jsx-a11y/role-supports-aria-props': 'warn',
       'react/no-unknown-property': 'error',
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
     settings: {
       react: {
