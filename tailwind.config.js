@@ -5,7 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"DM Sans"', 'Poppins', 'sans-serif'],
+        'ff-dm-sans': ['"DM Sans"', 'sans-serif'],
+        'ff-poppins': ['Poppins', 'sans-serif'],
       },
       colors: {
         // Orange

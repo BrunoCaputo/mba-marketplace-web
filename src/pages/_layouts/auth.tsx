@@ -5,7 +5,7 @@ import Logo from '@/assets/Logo.svg'
 
 export function AuthLayout() {
   return (
-    <div className="grid min-h-screen min-w-full grid-cols-3 overflow-hidden bg-surface font-sans">
+    <div className="font-ff-poppins grid min-h-screen min-w-full grid-cols-3 overflow-hidden bg-surface">
       <aside className="col-span-2 flex flex-col items-start justify-between gap-12 p-10">
         <img src={Logo} alt="" />
 

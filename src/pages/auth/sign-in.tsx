@@ -8,13 +8,19 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { signIn } from '@/api/sign-in'
+import { ErrorText } from '@/components/error-text'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signInSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  email: z
+    .string({ required_error: 'Email é obrigatório!' })
+    .min(1, 'Email é obrigatório!')
+    .email('Email inválido!'),
+  password: z
+    .string({ required_error: 'Senha é obrigatória!' })
+    .min(1, 'Senha é obrigatória!'),
 })
 
 type SignInFormType = z.infer<typeof signInSchema>
@@ -22,7 +28,11 @@ type SignInFormType = z.infer<typeof signInSchema>
 export function SignInPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
-  const { handleSubmit, register } = useForm<SignInFormType>({
+  const {
+    handleSubmit,
+    register,
+    formState: { isSubmitting, errors },
+  } = useForm<SignInFormType>({
     resolver: zodResolver(signInSchema),
   })
 
@@ -49,7 +59,9 @@ export function SignInPage() {
       <div className="flex h-full flex-col justify-between">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-start gap-2">
-            <h2 className="text-title-md text-gray-500">Acesse sua conta</h2>
+            <h2 className="font-ff-dm-sans text-title-md text-gray-500">
+              Acesse sua conta
+            </h2>
             <p className="text-body-sm text-gray-300">
               Informe seu e-mail e senha para entrar
             </p>
@@ -58,6 +70,7 @@ export function SignInPage() {
           <form
             onSubmit={handleSubmit(handleSignIn)}
             className="flex w-full flex-col gap-12"
+            noValidate
           >
             <div className="flex flex-col gap-5">
               <div>
@@ -71,6 +84,7 @@ export function SignInPage() {
                     {...register('email')}
                   />
                 </div>
+                {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
               </div>
 
               <div>
@@ -95,6 +109,9 @@ export function SignInPage() {
                     )}
                   </Button>
                 </div>
+                {errors.password && (
+                  <ErrorText>{errors.password.message}</ErrorText>
+                )}
               </div>
             </div>
 
@@ -103,6 +120,7 @@ export function SignInPage() {
               size="xl"
               type="submit"
               className="flex items-center justify-between border-none border-transparent bg-orange-base text-white hover:bg-orange-dark"
+              disabled={isSubmitting}
             >
               <span className="text-action-md">Acessar</span>
               <ArrowRight className="h-6 w-6" />
@@ -117,6 +135,7 @@ export function SignInPage() {
             size="xl"
             type="button"
             className="flex items-center justify-between border-orange-base text-orange-base hover:border-orange-dark hover:text-orange-dark"
+            disabled={isSubmitting}
           >
             <span className="text-action-md">Cadastrar</span>
             <ArrowRight className="h-6 w-6" />
