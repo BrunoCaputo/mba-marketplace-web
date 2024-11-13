@@ -1,17 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, Lock, Mail } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { signIn } from '@/api/sign-in'
-import { ErrorText } from '@/components/error-text'
+import { FormField } from '@/components/form-field'
+import { PasswordInput } from '@/components/password-input'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 
 const signInSchema = z.object({
   email: z
@@ -26,8 +25,6 @@ const signInSchema = z.object({
 type SignInFormType = z.infer<typeof signInSchema>
 
 export function SignInPage() {
-  const [showPassword, setShowPassword] = useState<boolean>(false)
-
   const {
     handleSubmit,
     register,
@@ -73,46 +70,32 @@ export function SignInPage() {
             noValidate
           >
             <div className="flex flex-col gap-5">
-              <div>
-                <Label htmlFor="email">E-mail</Label>
-                <div className="flex h-12 w-full items-center gap-2 border-b-[1px] border-gray-100 py-[14px] text-gray-400">
-                  <Mail className="h-6 w-6 text-gray-200" />
-                  <Input
-                    id="email"
-                    placeholder="Seu e-mail cadastrado"
-                    type="email"
-                    {...register('email')}
-                  />
-                </div>
-                {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
-              </div>
+              <FormField
+                labelFor="email"
+                labelText="E-mail"
+                error={errors.email}
+                prefixIcon={<Mail />}
+              >
+                <Input
+                  id="email"
+                  placeholder="Seu e-mail cadastrado"
+                  type="email"
+                  {...register('email')}
+                />
+              </FormField>
 
-              <div>
-                <Label htmlFor="password">Senha</Label>
-                <div className="flex h-12 w-full items-center gap-2 border-b-[1px] border-gray-100 py-[14px] text-gray-400">
-                  <Lock className="h-6 w-6 text-gray-200" />
-                  <Input
-                    id="password"
-                    placeholder="Sua senha de acesso"
-                    type={showPassword ? 'text' : 'password'}
-                    {...register('password')}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setShowPassword((state) => !state)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-6 w-6 text-gray-200" />
-                    ) : (
-                      <Eye className="h-6 w-6 text-gray-200" />
-                    )}
-                  </Button>
-                </div>
-                {errors.password && (
-                  <ErrorText>{errors.password.message}</ErrorText>
-                )}
-              </div>
+              <FormField
+                labelFor="password"
+                labelText="Senha"
+                error={errors.password}
+                prefixIcon={<Lock />}
+              >
+                <PasswordInput
+                  id="password"
+                  placeholder="Sua senha de acesso"
+                  {...register('password')}
+                />
+              </FormField>
             </div>
 
             <Button
