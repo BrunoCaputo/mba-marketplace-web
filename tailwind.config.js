@@ -81,25 +81,17 @@ export default {
         },
       },
       fontSize: {
-        title: {
-          lg: ['1.75rem', { fontWeight: 'bold', lineHeight: '1.2' }],
-          md: ['1.5rem', { fontWeight: 'bold', lineHeight: '1.2' }],
-          sm: ['1.125rem', { fontWeight: 'bold', lineHeight: '1.2' }],
-        },
+        'title-lg': ['1.75rem', { fontWeight: 'bold', lineHeight: '1.2' }],
+        'title-md': ['1.5rem', { fontWeight: 'bold', lineHeight: '1.2' }],
+        'title-sm': ['1.125rem', { fontWeight: 'bold', lineHeight: '1.2' }],
         subtitle: ['1rem', { fontWeight: 'semibold', lineHeight: '1.2' }],
-        body: {
-          md: ['1rem', { fontWeight: 'regular', lineHeight: '1.2' }],
-          sm: ['0.875rem', { fontWeight: 'regular', lineHeight: '1.2' }],
-          xs: ['0.75rem', { fontWeight: 'regular', lineHeight: '1.2' }],
-        },
-        label: {
-          md: ['0.75rem', { fontWeight: 'medium', lineHeight: '1.2' }],
-          sm: ['0.625rem', { fontWeight: 'medium', lineHeight: '1.2' }],
-        },
-        action: {
-          md: ['1rem', { fontWeight: 'medium', lineHeight: '1.2' }],
-          sm: ['0.875rem', { fontWeight: 'medium', lineHeight: '1.2' }],
-        },
+        'body-md': ['1rem', { fontWeight: 'normal', lineHeight: '1.2' }],
+        'body-sm': ['0.875rem', { fontWeight: 'normal', lineHeight: '1.2' }],
+        'body-xs': ['0.75rem', { fontWeight: 'normal', lineHeight: '1.2' }],
+        'label-md': ['0.75rem', { fontWeight: '500', lineHeight: '1.2' }],
+        'label-sm': ['0.625rem', { fontWeight: '500', lineHeight: '1.2' }],
+        'action-md': ['1rem', { fontWeight: '500', lineHeight: '1.2' }],
+        'action-sm': ['0.875rem', { fontWeight: '500', lineHeight: '1.2' }],
       },
       borderRadius: {
         lg: 'var(--radius)',
