@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { ArrowRight, Lock, Mail } from 'lucide-react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -25,6 +26,8 @@ const signInSchema = z.object({
 type SignInFormType = z.infer<typeof signInSchema>
 
 export function SignInPage() {
+  const navigate = useNavigate()
+
   const {
     handleSubmit,
     register,
@@ -119,6 +122,7 @@ export function SignInPage() {
             type="button"
             className="flex items-center justify-between border-orange-base text-orange-base hover:border-orange-dark hover:text-orange-dark"
             disabled={isSubmitting}
+            onClick={() => navigate('/sign-up')}
           >
             <span className="text-action-md">Cadastrar</span>
             <ArrowRight className="h-6 w-6" />
