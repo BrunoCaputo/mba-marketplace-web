@@ -13,5 +13,5 @@ export async function signIn({
   email,
   password,
 }: SignInBody): Promise<SignInResponse> {
-  return await api.post('/sellers/sessions', { email, password })
+  return api.post('/sellers/sessions', { email, password })
 }

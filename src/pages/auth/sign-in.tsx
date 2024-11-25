@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signIn } from '@/api/sign-in'
+import { signIn } from '@/api/auth/sign-in'
 import { FormField } from '@/components/form-field'
 import { PasswordInput } from '@/components/password-input'
 import { Button } from '@/components/ui/button'

@@ -1,10 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { ArrowRight, Lock, Mail, Phone, User } from 'lucide-react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signUp, SignUpBody, uploadProfilePicture } from '@/api/auth/sign-up'
+import { FileInput } from '@/components/file-input'
 import { FormField } from '@/components/form-field'
 import { PasswordInput } from '@/components/password-input'
 import { Button } from '@/components/ui/button'
@@ -12,7 +17,6 @@ import { Input } from '@/components/ui/input'
 
 const signUpSchema = z
   .object({
-    avatar: z.string().url(),
     name: z
       .string({ required_error: 'Nome é obrigatório!' })
       .min(1, 'Nome é obrigatório!'),
@@ -26,19 +30,20 @@ const signUpSchema = z
     password: z
       .string({ required_error: 'Senha é obrigatória!' })
       .min(1, 'Senha é obrigatória!'),
-    confirmPassword: z
+    passwordConfirmation: z
       .string({ required_error: 'Confimação da senha é obrigatória!' })
       .min(1, 'Confimação da senha é obrigatória!'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords don't match",
-    path: ['confirmPassword'],
+    path: ['passwordConfirmation'],
   })
 
 type SignUpFormType = z.infer<typeof signUpSchema>
 
 export function SignUpPage() {
   const navigate = useNavigate()
+  const [profilePicture, setProfilePicture] = useState<File | null>(null)
 
   const {
     handleSubmit,
@@ -48,8 +53,30 @@ export function SignUpPage() {
     resolver: zodResolver(signUpSchema),
   })
 
+  const { mutateAsync: uploadPicture } = useMutation({
+    mutationFn: uploadProfilePicture,
+  })
+
+  const { mutateAsync: createAccount } = useMutation({
+    mutationFn: signUp,
+  })
+
   async function handleSignUp(data: SignUpFormType) {
-    console.log(data)
+    try {
+      const pictureData = await uploadPicture(profilePicture)
+
+      const signUpData: SignUpBody = {
+        ...data,
+        avatarId: pictureData !== null ? pictureData.attachments?.[0].id : null,
+      }
+
+      await createAccount(signUpData)
+      toast.success('Conta criada com sucesso!')
+      navigate('/sign-in')
+    } catch (error) {
+      console.error(error)
+      toast.error('Falha ao criar sua conta!')
+    }
   }
 
   return (
@@ -75,6 +102,8 @@ export function SignUpPage() {
               <h3 className="font-ff-dm-sans text-title-sm text-gray-500">
                 Perfil
               </h3>
+
+              <FileInput onSelect={setProfilePicture} />
 
               <FormField
                 labelFor="name"
@@ -138,15 +167,15 @@ export function SignUpPage() {
               </FormField>
 
               <FormField
-                labelFor="confirmPassword"
-                labelText="Senha"
-                error={errors.confirmPassword}
+                labelFor="passwordConfirmation"
+                labelText="Confirmar senha"
+                error={errors.passwordConfirmation}
                 prefixIcon={<Lock />}
               >
                 <PasswordInput
-                  id="confirmPassword"
+                  id="passwordConfirmation"
                   placeholder="Confirme a senha"
-                  {...register('confirmPassword')}
+                  {...register('passwordConfirmation')}
                 />
               </FormField>
             </section>
