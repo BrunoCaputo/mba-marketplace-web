@@ -42,10 +42,10 @@ export function SignInPage() {
 
   async function handleSignIn({ email, password }: SignInFormType) {
     try {
-      console.log({ email, password })
+      const { accessToken } = await authenticate({ email, password })
 
-      await authenticate({ email, password })
-
+      localStorage.setItem('accessToken', accessToken)
+      navigate('/')
       toast.success('Logado com sucesso!')
     } catch (error) {
       console.error(error)

@@ -1,3 +1,4 @@
+import { Seller } from '@/@types/seller'
 import { api } from '@/lib/axios'
 
 interface UploadProfilePictureResponse {
@@ -17,16 +18,7 @@ export interface SignUpBody {
 }
 
 interface SignUpResponse {
-  seller: {
-    id: string
-    name: string
-    phone: string
-    email: string
-    avatar: {
-      id: string
-      url: string
-    }
-  }
+  seller: Seller
 }
 
 export async function uploadProfilePicture(
@@ -45,13 +37,10 @@ export async function uploadProfilePicture(
   }
 
   const formData = new FormData()
-  formData.append('attachment', file)
+  formData.append('files', file)
 
-  return api.post('/attachments', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+  return (await api.post('/attachments', formData))
+    .data as UploadProfilePictureResponse | null
 }
 
 export async function signUp({
@@ -62,12 +51,14 @@ export async function signUp({
   password,
   passwordConfirmation,
 }: SignUpBody): Promise<SignUpResponse> {
-  return await api.post('/sellers', {
-    name,
-    phone,
-    email,
-    avatarId,
-    password,
-    passwordConfirmation,
-  })
+  return (
+    await api.post('/sellers', {
+      name,
+      phone,
+      email,
+      avatarId,
+      password,
+      passwordConfirmation,
+    })
+  ).data as SignUpResponse
 }
