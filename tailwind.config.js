@@ -99,6 +99,9 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      boxShadow: {
+        chart: '0 2px 24px 0 #F5EAEA',
+      },
     },
   },
   plugins: [import('tailwindcss-animate')],

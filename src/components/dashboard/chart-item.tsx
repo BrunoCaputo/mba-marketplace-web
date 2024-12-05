@@ -6,14 +6,19 @@ import {
   Line,
   LineChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
 
+import { ViewsPerDay } from '@/@types/metrics'
+
+import { ChartTooltip } from './chart-tooltip'
+
 interface DashboardChartItemProps {
   title: string
   dates: [Date, Date]
-  chartData: { day: string; amount: number }[]
+  chartData: ViewsPerDay[]
 }
 
 export function DashboardChartItem({
@@ -41,16 +46,42 @@ export function DashboardChartItem({
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" axisLine={false} tickLine={false} dy={16} />
-          <YAxis axisLine={false} tickLine={false} width={80} />
+          <CartesianGrid
+            stroke="#E5E5E5"
+            strokeDasharray="4 4"
+            vertical={false}
+          />
+
+          <XAxis
+            dataKey="date"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12, fill: '#6B7280' }}
+            dy={10}
+            tickFormatter={(date: Date) => {
+              const day: string = new Date(date).getDate().toString()
+              return day.padStart(2, '0')
+            }}
+          />
+
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12, fill: '#6B7280' }}
+            width={40}
+          />
+
+          <Tooltip content={<ChartTooltip />} />
+
           <Line
-            type="linear"
+            type="monotone"
             dataKey="amount"
-            stroke="#0095E5"
+            stroke="#5EC5FD"
             strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 6 }}
           />
         </LineChart>
       </ResponsiveContainer>
