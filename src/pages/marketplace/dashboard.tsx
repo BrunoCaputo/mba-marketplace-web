@@ -13,22 +13,22 @@ import { TitleLabel } from '@/components/title-label'
 export function DashboardPage() {
   const { data: soldProducts } = useQuery({
     queryKey: ['soldProducts'],
-    queryFn: () => getSoldProductsMetrics(),
+    queryFn: getSoldProductsMetrics,
   })
 
   const { data: availableProducts } = useQuery({
     queryKey: ['availableProducts'],
-    queryFn: () => getAvailableProductsMetrics(),
+    queryFn: getAvailableProductsMetrics,
   })
 
   const { data: views } = useQuery({
     queryKey: ['views'],
-    queryFn: () => getViewsMetrics(),
+    queryFn: getViewsMetrics,
   })
 
   const { data: viewsPerDay } = useQuery({
     queryKey: ['viewsPerDay'],
-    queryFn: () => getViewsPerDayMetrics(),
+    queryFn: getViewsPerDayMetrics,
   })
 
   function getDates(): [Date, Date] {

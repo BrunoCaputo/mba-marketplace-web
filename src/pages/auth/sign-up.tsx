@@ -82,7 +82,7 @@ export function SignUpPage() {
   return (
     <>
       <Helmet title="Sign Up" />
-      <div className="flex h-full flex-col justify-between gap-10 overflow-auto">
+      <div className="flex h-full flex-col justify-between gap-10 overflow-auto pb-[72px]">
         <div className="flex flex-col gap-10">
           <div className="flex flex-col items-start gap-2">
             <h2 className="font-ff-dm-sans text-title-md text-gray-500">

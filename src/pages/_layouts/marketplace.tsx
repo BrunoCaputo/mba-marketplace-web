@@ -49,7 +49,7 @@ export function MarketPlaceLayout() {
 
   const { data: seller } = useQuery({
     queryKey: ['me'],
-    queryFn: () => getMyProfileData(),
+    queryFn: getMyProfileData,
   })
 
   return (

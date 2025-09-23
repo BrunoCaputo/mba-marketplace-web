@@ -49,7 +49,7 @@ export function DashboardChartItem({
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
           <CartesianGrid
-            stroke="#E5E5E5"
+            stroke="#949494"
             strokeDasharray="4 4"
             vertical={false}
           />
@@ -58,7 +58,7 @@ export function DashboardChartItem({
             dataKey="date"
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: '#6B7280' }}
+            tick={{ fontSize: 10, fill: '#949494' }}
             dy={10}
             tickFormatter={(date: Date) => {
               const day: string = new Date(date).getDate().toString()
@@ -69,11 +69,11 @@ export function DashboardChartItem({
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: '#6B7280' }}
+            tick={{ fontSize: 10, fill: '#949494' }}
             width={40}
           />
 
-          <Tooltip content={<ChartTooltip />} />
+          <Tooltip content={<ChartTooltip formatDateFunction={formatDate} />} />
 
           <Line
             type="monotone"

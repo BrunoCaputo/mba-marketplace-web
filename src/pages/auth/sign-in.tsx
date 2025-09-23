@@ -56,7 +56,7 @@ export function SignInPage() {
   return (
     <>
       <Helmet title="Sign In" />
-      <div className="flex h-full flex-col justify-between">
+      <div className="flex h-full flex-col justify-between pb-[72px]">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-start gap-2">
             <h2 className="font-ff-dm-sans text-title-md text-gray-500">
