@@ -2,6 +2,8 @@ import { LucideProps } from 'lucide-react'
 import { cloneElement, PropsWithChildren, ReactElement } from 'react'
 import { FieldError } from 'react-hook-form'
 
+import { cn } from '@/lib/utils'
+
 import { ErrorText } from './error-text'
 import { Label } from './ui/label'
 
@@ -20,15 +22,27 @@ export function FormField({
   children,
 }: PropsWithChildren<FormFieldProps>) {
   return (
-    <div className="focus-within:text-orange-base focus-within:caret-orange-base">
-      <Label htmlFor={labelFor}>{labelText}</Label>
-      <div className="flex h-12 w-full items-center gap-2 border-b-[1px] border-gray-100 py-[14px] text-gray-400">
+    <div className="group w-full focus-within:text-orange-base focus-within:caret-orange-base">
+      <Label
+        htmlFor={labelFor}
+        className="mb-1 block text-xs font-medium text-gray-400 transition-colors group-focus-within:text-orange-base"
+      >
+        {labelText}
+      </Label>
+
+      <div className="group flex h-12 w-full items-center gap-2 border-b border-gray-100 group-focus-within:border-orange-base group-focus-within:text-orange-base">
         {prefixIcon &&
           cloneElement<LucideProps>(prefixIcon, {
-            className: `h-6 w-6 ${error ? 'text-danger' : 'text-gray-200'}`,
+            className: cn(
+              'h-6 w-6 transition-colors',
+              error
+                ? 'text-danger'
+                : 'text-gray-200 group-focus-within:text-orange-base group-has-[input:not(:placeholder-shown)]:text-orange-base',
+            ),
           })}
-        {children}
+        <div className="flex-1 text-gray-400">{children}</div>
       </div>
+
       {error && <ErrorText>{error.message}</ErrorText>}
     </div>
   )
