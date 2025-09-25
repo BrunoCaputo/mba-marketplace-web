@@ -24,26 +24,32 @@ export function FileInput({ onSelect }: FileInputProps) {
   }
 
   return (
-    <div
-      onClick={handleDivClick}
-      className="relative flex h-[120px] w-[120px] cursor-pointer items-center justify-center rounded-xl bg-shape"
-    >
-      {selectedFile ? (
-        <img
-          src={URL.createObjectURL(selectedFile)}
-          alt="Imagem de perfil"
-          className="h-full w-full rounded-xl object-cover"
+    <div className="relative w-min">
+      <div
+        onClick={handleDivClick}
+        className="group relative flex h-[120px] w-[120px] cursor-pointer items-center justify-center rounded-xl bg-shape"
+      >
+        {selectedFile ? (
+          <img
+            src={URL.createObjectURL(selectedFile)}
+            alt="Imagem de perfil"
+            className="h-full w-full rounded-xl object-cover"
+          />
+        ) : (
+          <ImageUp className="h-8 w-8 text-orange-base" />
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
         />
-      ) : (
-        <ImageUp className="h-8 w-8 text-orange-base" />
-      )}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="hidden"
-      />
+
+        <div className="absolute left-0 top-0 z-30 flex h-full w-full items-center justify-center rounded-xl bg-transparent group-hover:bg-black/60">
+          <ImageUp className="h-8 w-8 text-transparent group-hover:z-50 group-hover:text-white" />
+        </div>
+      </div>
 
       {selectedFile && (
         <div

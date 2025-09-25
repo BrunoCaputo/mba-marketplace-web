@@ -8,7 +8,7 @@ import { ErrorText } from './error-text'
 import { Label } from './ui/label'
 
 interface FormFieldProps {
-  labelText: string
+  labelText?: string
   labelFor: string
   error?: FieldError
   prefixIcon?: ReactElement
@@ -23,12 +23,14 @@ export function FormField({
 }: PropsWithChildren<FormFieldProps>) {
   return (
     <div className="group w-full focus-within:text-orange-base focus-within:caret-orange-base">
-      <Label
-        htmlFor={labelFor}
-        className="mb-1 block text-xs font-medium text-gray-400 transition-colors group-focus-within:text-orange-base"
-      >
-        {labelText}
-      </Label>
+      {labelText && (
+        <Label
+          htmlFor={labelFor}
+          className="mb-1 block text-xs font-medium text-gray-400 transition-colors group-focus-within:text-orange-base"
+        >
+          {labelText}
+        </Label>
+      )}
 
       <div className="group flex h-12 w-full items-center gap-2 border-b border-gray-100 group-focus-within:border-orange-base group-focus-within:text-orange-base">
         {prefixIcon &&
