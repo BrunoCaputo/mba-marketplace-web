@@ -3,7 +3,7 @@ export interface Product {
   title: string
   description: string
   priceInCents: number
-  status: 'available' | 'sold' | 'cancelled'
+  status: ProductStatus
   owner: {
     id: string
     name: string
@@ -23,4 +23,10 @@ export interface Product {
     id: string
     url: string
   }[]
+}
+
+export enum ProductStatus {
+  available = 'available',
+  sold = 'sold',
+  cancelled = 'cancelled',
 }

@@ -5,12 +5,16 @@ import { MarketPlaceLayout } from './pages/_layouts/marketplace'
 import { SignInPage } from './pages/auth/sign-in'
 import { SignUpPage } from './pages/auth/sign-up'
 import { DashboardPage } from './pages/marketplace/dashboard'
+import { ProductsPage } from './pages/marketplace/products'
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <MarketPlaceLayout />,
-    children: [{ path: '/', element: <DashboardPage /> }],
+    children: [
+      { path: '/', element: <DashboardPage /> },
+      { path: '/products', element: <ProductsPage /> },
+    ],
   },
   {
     path: '/',
