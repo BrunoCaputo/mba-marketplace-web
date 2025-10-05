@@ -31,7 +31,6 @@ export function Select({
     event.preventDefault()
     event.stopPropagation()
     onClearSelection?.()
-    props.onValueChange?.('')
   }
 
   return (

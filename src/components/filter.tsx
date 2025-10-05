@@ -16,7 +16,7 @@ const filterSchema = z.object({
   status: z.enum(['available', 'sold', 'cancelled']).optional(),
 })
 
-type FilterFormType = z.infer<typeof filterSchema>
+export type FilterFormType = z.infer<typeof filterSchema>
 
 const statusOptions: SelectOption[] = [
   { label: 'Anunciado', value: ProductStatus.available },
@@ -24,7 +24,13 @@ const statusOptions: SelectOption[] = [
   { label: 'Cancelado', value: ProductStatus.cancelled },
 ]
 
-export function Filter() {
+interface FilterProps {
+  search?: string
+  status?: ProductStatus
+  onUpdateFilterData?: (data: FilterFormType) => void
+}
+
+export function Filter({ search, status, onUpdateFilterData }: FilterProps) {
   const {
     control,
     handleSubmit,
@@ -32,9 +38,15 @@ export function Filter() {
     formState: { isSubmitting, errors },
   } = useForm<FilterFormType>({
     resolver: zodResolver(filterSchema),
+    defaultValues: {
+      search,
+      status,
+    },
   })
 
-  async function handleFilter() {}
+  async function handleFilter(data: FilterFormType) {
+    onUpdateFilterData?.(data)
+  }
 
   return (
     <div className="flex w-full flex-col gap-6 rounded-[1.25rem] bg-white p-6">
@@ -71,6 +83,12 @@ export function Filter() {
                   value={field.value ?? ''}
                   onValueChange={(value) => field.onChange(value)}
                   options={statusOptions}
+                  onClearSelection={() => {
+                    field.onChange('')
+                    setTimeout(() => {
+                      field.onChange(undefined)
+                    }, 0)
+                  }}
                   placeholder="Status"
                   className="w-full"
                 />
