@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, Tag } from 'lucide-react'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -35,14 +36,16 @@ export function Filter({ search, status, onUpdateFilterData }: FilterProps) {
     control,
     handleSubmit,
     register,
+    setValue,
     formState: { isSubmitting, errors },
   } = useForm<FilterFormType>({
     resolver: zodResolver(filterSchema),
-    defaultValues: {
-      search,
-      status,
-    },
   })
+
+  useEffect(() => {
+    setValue('search', search ?? '')
+    setValue('status', status ?? undefined)
+  }, [])
 
   async function handleFilter(data: FilterFormType) {
     onUpdateFilterData?.(data)
@@ -80,14 +83,12 @@ export function Filter({ search, status, onUpdateFilterData }: FilterProps) {
               control={control}
               render={({ field }) => (
                 <Select
-                  value={field.value ?? ''}
+                  value={field.value}
                   onValueChange={(value) => field.onChange(value)}
                   options={statusOptions}
                   onClearSelection={() => {
-                    field.onChange('')
-                    setTimeout(() => {
-                      field.onChange(undefined)
-                    }, 0)
+                    field.onChange(undefined)
+                    handleFilter({ status: undefined })
                   }}
                   placeholder="Status"
                   className="w-full"

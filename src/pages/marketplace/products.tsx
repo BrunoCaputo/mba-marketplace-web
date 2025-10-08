@@ -10,8 +10,10 @@ export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const { data: products } = useQuery({
-    queryKey: ['myProducts'],
-    queryFn: getMyProducts,
+    queryKey: ['myProducts', searchParams.toString()],
+    queryFn: async () => {
+      return getMyProducts(searchParams)
+    },
   })
 
   function handleUpdateFilterData(data: FilterFormType) {
