@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { ProductStatus } from '@/@types/product'
 import { SelectOption } from '@/@types/ui'
+import { cn } from '@/lib/utils'
 
 import { FormField } from './form-field'
 import { Select } from './select'
@@ -29,9 +30,15 @@ interface FilterProps {
   search?: string
   status?: ProductStatus
   onUpdateFilterData?: (data: FilterFormType) => void
+  className?: string
 }
 
-export function Filter({ search, status, onUpdateFilterData }: FilterProps) {
+export function Filter({
+  search,
+  status,
+  onUpdateFilterData,
+  className,
+}: FilterProps) {
   const {
     control,
     handleSubmit,
@@ -52,7 +59,12 @@ export function Filter({ search, status, onUpdateFilterData }: FilterProps) {
   }
 
   return (
-    <div className="flex w-full flex-col gap-6 rounded-[1.25rem] bg-white p-6">
+    <div
+      className={cn(
+        'flex max-h-[306px] w-full flex-col gap-6 rounded-[1.25rem] bg-white p-6',
+        className,
+      )}
+    >
       <h3 className="text-left text-title-sm text-gray-300">Filtrar</h3>
       <form
         onSubmit={handleSubmit(handleFilter)}

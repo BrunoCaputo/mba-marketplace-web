@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import { ProductStatus } from '@/@types/product'
 import { getMyProducts } from '@/api/marketplace/products'
 import { Filter, FilterFormType } from '@/components/filter'
+import { ProductItem } from '@/components/product-item'
 import { TitleLabel } from '@/components/title-label'
 
 export function ProductsPage() {
@@ -37,7 +38,7 @@ export function ProductsPage() {
         subtitle="Acesse gerencie a sua lista de produtos à venda"
       />
 
-      <section className="grid w-full grid-cols-3">
+      <section className="grid w-full grid-cols-3 gap-x-6">
         <Filter
           search={searchParams.get('search') ?? undefined}
           status={
@@ -48,8 +49,13 @@ export function ProductsPage() {
               : undefined
           }
           onUpdateFilterData={handleUpdateFilterData}
+          className="col-span-1"
         />
-        <div />
+        <div className="col-span-2 grid grid-cols-2 gap-4">
+          {products?.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+        </div>
       </section>
     </div>
   )
