@@ -5,9 +5,10 @@ import { Tag } from './tag'
 
 interface ProductItemProps {
   product: Product
+  onClick?: () => void
 }
 
-export function ProductItem({ product }: ProductItemProps) {
+export function ProductItem({ product, onClick }: ProductItemProps) {
   const productImage = product.attachments[0]
 
   const formattedPrice = Intl.NumberFormat('pt-BR', {
@@ -16,7 +17,10 @@ export function ProductItem({ product }: ProductItemProps) {
   }).format(product.priceInCents / 100)
 
   return (
-    <div className="relative flex h-[252px] w-[324px] cursor-pointer flex-col gap-1 rounded-[1.25rem] border-2 border-transparent bg-white p-1 hover:border-blue-base">
+    <div
+      className="relative flex h-[252px] w-[324px] cursor-pointer flex-col gap-1 rounded-[1.25rem] border-2 border-transparent bg-white p-1 hover:border-blue-base"
+      onClick={onClick}
+    >
       <div className="absolute right-3 top-3 flex items-center gap-1">
         <StatusTag status={product.status} />
         <Tag>{product.category.title}</Tag>

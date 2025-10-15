@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { ProductStatus } from '@/@types/product'
+import { Product, ProductStatus } from '@/@types/product'
 import { getMyProducts } from '@/api/marketplace/products'
 import { Filter, FilterFormType } from '@/components/filter'
 import { ProductItem } from '@/components/product-item'
@@ -9,6 +9,7 @@ import { TitleLabel } from '@/components/title-label'
 
 export function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
 
   const { data: products } = useQuery({
     queryKey: ['myProducts', searchParams.toString()],
@@ -29,7 +30,9 @@ export function ProductsPage() {
     setSearchParams(params)
   }
 
-  console.log(products)
+  function handleProductItemClick(product: Product) {
+    navigate(`/products/${product.id}`)
+  }
 
   return (
     <div className="flex h-full w-full flex-col items-start justify-start gap-10">
@@ -53,7 +56,11 @@ export function ProductsPage() {
         />
         <div className="col-span-2 grid grid-cols-2 gap-4">
           {products?.map((product) => (
-            <ProductItem key={product.id} product={product} />
+            <ProductItem
+              key={product.id}
+              product={product}
+              onClick={() => handleProductItemClick(product)}
+            />
           ))}
         </div>
       </section>

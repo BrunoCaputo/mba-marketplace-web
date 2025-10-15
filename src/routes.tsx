@@ -5,6 +5,7 @@ import { MarketPlaceLayout } from './pages/_layouts/marketplace'
 import { SignInPage } from './pages/auth/sign-in'
 import { SignUpPage } from './pages/auth/sign-up'
 import { DashboardPage } from './pages/marketplace/dashboard'
+import { EditProductPage } from './pages/marketplace/edit-product'
 import { ProductsPage } from './pages/marketplace/products'
 
 export const router = createBrowserRouter([
@@ -14,6 +15,7 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashboardPage /> },
       { path: '/products', element: <ProductsPage /> },
+      { path: '/products/:id', element: <EditProductPage /> },
     ],
   },
   {
