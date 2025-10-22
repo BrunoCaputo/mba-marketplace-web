@@ -14,11 +14,7 @@ export interface Product {
       url: string
     }
   }
-  category: {
-    id: string
-    title: string
-    slug: string
-  }
+  category: Category
   attachments: {
     id: string
     url: string
@@ -29,4 +25,10 @@ export enum ProductStatus {
   available = 'available',
   sold = 'sold',
   cancelled = 'cancelled',
+}
+
+export interface Category {
+  id: string
+  title: string
+  slug: string
 }

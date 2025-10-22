@@ -2,7 +2,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ArrowLeft, Ban, Check } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getProductById, markAsSold } from '@/api/marketplace/products'
+import { ProductStatus } from '@/@types/product'
+import { getProductById, updateProductStatus } from '@/api/marketplace/products'
+import { ProductForm } from '@/components/product-form'
 import { TextButton } from '@/components/text-button'
 import { TitleLabel } from '@/components/title-label'
 
@@ -21,8 +23,8 @@ export function EditProductPage() {
     },
   })
 
-  const { mutateAsync: markAsSoldFn } = useMutation({
-    mutationFn: markAsSold,
+  const { mutateAsync: markAsSold } = useMutation({
+    mutationFn: updateProductStatus,
   })
 
   function handleBackToProducts() {
@@ -30,7 +32,7 @@ export function EditProductPage() {
   }
 
   async function handleMarkAsSold() {
-    await markAsSoldFn(product!.id)
+    await markAsSold({ id: product!.id, status: ProductStatus.sold })
   }
 
   if (!product) {
@@ -56,6 +58,8 @@ export function EditProductPage() {
           <TextButton icon={<Ban />}>Desativar anúncio</TextButton>
         </div>
       </div>
+
+      <ProductForm product={product} />
     </div>
   )
 }

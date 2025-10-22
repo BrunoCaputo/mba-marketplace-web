@@ -32,7 +32,7 @@ export function FormField({
         </Label>
       )}
 
-      <div className="group flex h-12 w-full items-center gap-2 border-b border-gray-100 group-focus-within:border-gray-400 group-focus-within:text-orange-base">
+      <div className="group flex min-h-12 w-full items-center gap-2 border-b border-gray-100 group-focus-within:border-gray-400 group-focus-within:text-orange-base">
         {prefixIcon &&
           cloneElement<LucideProps>(prefixIcon, {
             className: cn(

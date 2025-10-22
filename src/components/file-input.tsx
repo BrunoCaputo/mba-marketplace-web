@@ -1,11 +1,21 @@
 import { CircleX, ImageUp } from 'lucide-react'
 import { useRef, useState } from 'react'
 
+import { cn } from '@/lib/utils'
+
 interface FileInputProps {
   onSelect: (file: File | null) => void
+  className?: string
+  imageClassName?: string
+  initialImage?: string
 }
 
-export function FileInput({ onSelect }: FileInputProps) {
+export function FileInput({
+  className,
+  onSelect,
+  initialImage,
+  imageClassName,
+}: FileInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
@@ -27,13 +37,28 @@ export function FileInput({ onSelect }: FileInputProps) {
     <div className="relative w-min">
       <div
         onClick={handleDivClick}
-        className="group relative flex h-[120px] w-[120px] cursor-pointer items-center justify-center rounded-xl bg-shape"
+        className={cn(
+          'group relative flex h-[120px] w-[120px] cursor-pointer items-center justify-center rounded-xl bg-shape',
+          className,
+        )}
       >
         {selectedFile ? (
           <img
             src={URL.createObjectURL(selectedFile)}
-            alt="Imagem de perfil"
-            className="h-full w-full rounded-xl object-cover"
+            alt="Imagem selecionada"
+            className={cn(
+              'h-full w-full rounded-xl object-cover',
+              imageClassName,
+            )}
+          />
+        ) : initialImage ? (
+          <img
+            src={initialImage}
+            alt="Imagem selecionada"
+            className={cn(
+              'h-full w-full rounded-xl object-cover',
+              imageClassName,
+            )}
           />
         ) : (
           <ImageUp className="h-8 w-8 text-orange-base" />
@@ -46,7 +71,12 @@ export function FileInput({ onSelect }: FileInputProps) {
           className="hidden"
         />
 
-        <div className="absolute left-0 top-0 z-30 flex h-full w-full items-center justify-center rounded-xl bg-transparent group-hover:bg-black/60">
+        <div
+          className={cn(
+            'absolute left-0 top-0 z-30 flex h-full w-full items-center justify-center rounded-xl bg-transparent group-hover:bg-black/60',
+            imageClassName,
+          )}
+        >
           <ImageUp className="h-8 w-8 text-transparent group-hover:z-50 group-hover:text-white" />
         </div>
       </div>
