@@ -24,7 +24,7 @@ interface ProductFormProps {
 
 const productSchema = z.object({
   title: z.string(),
-  price: z.number(),
+  price: z.number().min(1, 'O valor do produto não pode ser 0'),
   description: z.string(),
   category: z.string(),
 })

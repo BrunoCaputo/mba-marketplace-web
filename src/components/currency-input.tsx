@@ -43,6 +43,7 @@ function digitsOnly(value: string) {
 /** formata string de dígitos (cents) para exibição BRL-like: 123456 -> "1.234,56" */
 function formatBRLCents(digits: string) {
   if (!digits) return ''
+  if (digits === '0') return ''
   const normalized = digits.padStart(3, '0') // garante pelo menos 3 caracteres para separar centavos
   const cents = normalized.slice(-2)
   let integer = normalized.slice(0, -2)
