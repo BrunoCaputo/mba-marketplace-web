@@ -9,9 +9,9 @@ import { z } from 'zod'
 import { Product } from '@/@types/product'
 import { getAllCategories } from '@/api/marketplace/products'
 
+import CurrencyInput from './currency-input'
 import { FileInput } from './file-input'
 import { FormField } from './form-field'
-import { MoneyInput } from './money-input'
 import { Select } from './select'
 import { StatusTag } from './status-tag'
 import { Button } from './ui/button'
@@ -24,7 +24,7 @@ interface ProductFormProps {
 
 const productSchema = z.object({
   title: z.string(),
-  price: z.string(),
+  price: z.number(),
   description: z.string(),
   category: z.string(),
 })
@@ -59,20 +59,15 @@ export function ProductForm({ product }: ProductFormProps) {
     values: isEdit
       ? {
           title: product.title,
-          price: product.priceInCents.toString(),
+          price: product.priceInCents,
           description: product.description,
           category: product.category.id,
         }
       : undefined,
   })
 
-  function formatPrice(price: string): number {
-    return Number(price.replace(/\D/g, ''))
-  }
-
   function handleSaveProduct(data: ProductFormType) {
     console.log(data)
-    console.log(formatPrice(data.price))
   }
 
   return (
@@ -120,11 +115,10 @@ export function ProductForm({ product }: ProductFormProps) {
                 name="price"
                 control={control}
                 render={({ field }) => (
-                  <MoneyInput
-                    id="price"
+                  <CurrencyInput
+                    value={field.value ?? null} // cents (number|null)
+                    onValueChange={(cents) => field.onChange(cents)}
                     placeholder="0,00"
-                    type="text"
-                    {...field}
                   />
                 )}
               />
