@@ -21,6 +21,14 @@ export interface Product {
   }[]
 }
 
+export interface ProductBody {
+  title: string
+  categoryId: string
+  description: string
+  priceInCents: number
+  attachmentsIds: string[]
+}
+
 export enum ProductStatus {
   available = 'available',
   sold = 'sold',

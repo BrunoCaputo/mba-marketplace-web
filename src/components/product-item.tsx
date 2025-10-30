@@ -27,7 +27,7 @@ export function ProductItem({ product, onClick }: ProductItemProps) {
       </div>
 
       <img
-        src={productImage.url}
+        src={productImage?.url}
         alt={`${product.title} Image`}
         loading="lazy"
         className="h-36 w-full rounded-2xl object-cover"

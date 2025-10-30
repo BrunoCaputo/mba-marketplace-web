@@ -1,13 +1,13 @@
-import { Category, Product, ProductStatus } from '@/@types/product'
+import { Category, Product, ProductBody, ProductStatus } from '@/@types/product'
 import { api } from '@/lib/axios'
 import { createApiPath } from '@/utils/create-api-path'
 
 export async function getMyProducts(
   params: URLSearchParams,
 ): Promise<Product[]> {
-  const products = await api.get(createApiPath('/products/me', params))
+  const response = await api.get(createApiPath('/products/me', params))
 
-  return products.data.products as Product[]
+  return response.data.products as Product[]
 }
 
 export async function updateProductStatus({
@@ -23,13 +23,31 @@ export async function updateProductStatus({
 }
 
 export async function getProductById(id: string): Promise<Product> {
-  const product = await api.get(`/products/${id}`)
+  const response = await api.get(`/products/${id}`)
 
-  return product.data.product as Product
+  return response.data.product as Product
 }
 
 export async function getAllCategories(): Promise<Category[]> {
-  const categories = await api.get('/categories')
+  const response = await api.get('/categories')
 
-  return categories.data.categories as Category[]
+  return response.data.categories as Category[]
+}
+
+export async function editProduct({
+  productId,
+  product,
+}: {
+  productId: string
+  product: ProductBody
+}): Promise<Product> {
+  const response = await api.put(`/products/${productId}`, product)
+
+  return response.data.product as Product
+}
+
+export async function createProduct(product: ProductBody): Promise<Product> {
+  const response = await api.post('/products', product)
+
+  return response.data.product as Product
 }

@@ -1,13 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { DollarSign } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { Product } from '@/@types/product'
-import { getAllCategories } from '@/api/marketplace/products'
+import { Product, ProductBody } from '@/@types/product'
+import {
+  createProduct,
+  editProduct,
+  getAllCategories,
+} from '@/api/marketplace/products'
 
 import CurrencyInput from './currency-input'
 import { FileInput } from './file-input'
@@ -41,12 +47,20 @@ export function ProductForm({ product }: ProductFormProps) {
 
   if (isEdit) {
     const [productAttachment] = product.attachments
-    initialProductImage.current = productAttachment.url
+    initialProductImage.current = productAttachment?.url
   }
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: getAllCategories,
+  })
+
+  const { mutateAsync: editProductFn } = useMutation({
+    mutationFn: editProduct,
+  })
+
+  const { mutateAsync: createProductFn } = useMutation({
+    mutationFn: createProduct,
   })
 
   const {
@@ -66,8 +80,40 @@ export function ProductForm({ product }: ProductFormProps) {
       : undefined,
   })
 
-  function handleSaveProduct(data: ProductFormType) {
-    console.log(data)
+  async function handleSaveProduct(data: ProductFormType) {
+    console.log('DATA:', data)
+    let responseProduct: Product | null = null
+    const productBody: ProductBody = {
+      title: data.title,
+      description: data.description,
+      priceInCents: data.price,
+      categoryId: data.category,
+      attachmentsIds: [],
+    }
+
+    try {
+      if (isEdit) {
+        const editedProduct = await editProductFn({
+          productId: product.id,
+          product: productBody,
+        })
+
+        responseProduct = editedProduct
+        console.log('EDIT PRODUCT:', editedProduct)
+      } else {
+        const createdProduct = await createProductFn(productBody)
+        responseProduct = createdProduct
+      }
+
+      toast.success(
+        `Produto "${responseProduct.title}" ${isEdit ? 'editado' : 'criado'} com sucesso`,
+      )
+    } catch (error) {
+      console.error(error)
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message)
+      }
+    }
   }
 
   return (
