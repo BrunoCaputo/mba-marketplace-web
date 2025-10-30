@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signUp, SignUpBody, uploadProfilePicture } from '@/api/auth/sign-up'
+import { uploadAttachment } from '@/api/attachments/attachments'
+import { signUp, SignUpBody } from '@/api/auth/sign-up'
 import { FileInput } from '@/components/file-input'
 import { FormField } from '@/components/form-field'
 import { PasswordInput } from '@/components/password-input'
@@ -54,7 +55,7 @@ export function SignUpPage() {
   })
 
   const { mutateAsync: uploadPicture } = useMutation({
-    mutationFn: uploadProfilePicture,
+    mutationFn: uploadAttachment,
   })
 
   const { mutateAsync: createAccount } = useMutation({

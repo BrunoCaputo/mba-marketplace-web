@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Product, ProductBody } from '@/@types/product'
+import { uploadAttachment } from '@/api/attachments/attachments'
 import {
   createProduct,
   editProduct,
@@ -38,7 +39,7 @@ const productSchema = z.object({
 type ProductFormType = z.infer<typeof productSchema>
 
 export function ProductForm({ product }: ProductFormProps) {
-  const [, setProductImage] = useState<File | null>(null)
+  const [productImage, setProductImage] = useState<File | null>(null)
   const navigate = useNavigate()
 
   const initialProductImage = useRef<string>()
@@ -53,6 +54,10 @@ export function ProductForm({ product }: ProductFormProps) {
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: getAllCategories,
+  })
+
+  const { mutateAsync: uploadProductImage } = useMutation({
+    mutationFn: uploadAttachment,
   })
 
   const { mutateAsync: editProductFn } = useMutation({
@@ -81,17 +86,23 @@ export function ProductForm({ product }: ProductFormProps) {
   })
 
   async function handleSaveProduct(data: ProductFormType) {
-    console.log('DATA:', data)
-    let responseProduct: Product | null = null
-    const productBody: ProductBody = {
-      title: data.title,
-      description: data.description,
-      priceInCents: data.price,
-      categoryId: data.category,
-      attachmentsIds: [],
-    }
-
     try {
+      const imageData = await uploadProductImage(productImage)
+
+      const attachmentsIds: string[] =
+        (imageData ?? (isEdit ? product : null))?.attachments.map(
+          (attachment) => attachment.id,
+        ) ?? []
+
+      let responseProduct: Product | null = null
+      const productBody: ProductBody = {
+        title: data.title,
+        description: data.description,
+        priceInCents: data.price,
+        categoryId: data.category,
+        attachmentsIds,
+      }
+
       if (isEdit) {
         const editedProduct = await editProductFn({
           productId: product.id,
@@ -99,7 +110,6 @@ export function ProductForm({ product }: ProductFormProps) {
         })
 
         responseProduct = editedProduct
-        console.log('EDIT PRODUCT:', editedProduct)
       } else {
         const createdProduct = await createProductFn(productBody)
         responseProduct = createdProduct
