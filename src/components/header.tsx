@@ -1,4 +1,5 @@
 import { ChartArea, Package, Plus, User } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import { Seller } from '@/@types/seller'
 import LogoIcon from '@/assets/LogoIcon.svg'
@@ -11,6 +12,12 @@ interface HeaderProps {
 }
 
 export function Header({ seller }: HeaderProps) {
+  const navigate = useNavigate()
+
+  function handleNewProduct() {
+    navigate('/products/new')
+  }
+
   return (
     <header className="mx-auto flex h-20 w-full max-w-[1366px] items-center justify-between px-5 py-4">
       <img src={LogoIcon} alt="Logo" className="h-10 w-14" />
@@ -32,6 +39,7 @@ export function Header({ seller }: HeaderProps) {
           className="flex items-center gap-2 border-none border-transparent bg-orange-base text-action-sm text-white hover:bg-orange-dark"
           size="lg"
           variant="default"
+          onClick={handleNewProduct}
         >
           <Plus className="h-5 w-5" />
           Novo produto

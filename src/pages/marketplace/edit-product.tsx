@@ -12,7 +12,7 @@ export function EditProductPage() {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { data: product } = useQuery({
+  const { data: product, refetch } = useQuery({
     queryKey: ['product', id],
     queryFn: async () => {
       if (!id) {
@@ -33,6 +33,7 @@ export function EditProductPage() {
 
   async function handleMarkAsSold() {
     await markAsSold({ id: product!.id, status: ProductStatus.sold })
+    await refetch()
   }
 
   if (!product) {

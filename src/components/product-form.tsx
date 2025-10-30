@@ -30,10 +30,10 @@ interface ProductFormProps {
 }
 
 const productSchema = z.object({
-  title: z.string(),
+  title: z.string().min(1, 'Campo obrigatório'),
   price: z.number().min(1, 'O valor do produto não pode ser 0'),
-  description: z.string(),
-  category: z.string(),
+  description: z.string().min(1, 'Campo obrigatório'),
+  category: z.string().min(1, 'Campo obrigatório'),
 })
 
 type ProductFormType = z.infer<typeof productSchema>
@@ -118,6 +118,7 @@ export function ProductForm({ product }: ProductFormProps) {
       toast.success(
         `Produto "${responseProduct.title}" ${isEdit ? 'editado' : 'criado'} com sucesso`,
       )
+      navigate('/products')
     } catch (error) {
       console.error(error)
       if (error instanceof AxiosError) {
@@ -147,7 +148,9 @@ export function ProductForm({ product }: ProductFormProps) {
 
         {/* Fields */}
         <form
-          onSubmit={handleSubmit(handleSaveProduct)}
+          onSubmit={handleSubmit(handleSaveProduct, (data) => {
+            console.log('DATA:', data)
+          })}
           className="flex w-full flex-col gap-5"
           noValidate
         >
