@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { DollarSign } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -87,6 +87,11 @@ export function ProductForm({ product }: ProductFormProps) {
 
   async function handleSaveProduct(data: ProductFormType) {
     try {
+      if (!productImage) {
+        toast.error('A imagem do produto é obrigatória')
+        return
+      }
+
       const imageData = await uploadProductImage(productImage)
 
       const attachmentsIds: string[] =
@@ -121,7 +126,7 @@ export function ProductForm({ product }: ProductFormProps) {
       navigate('/products')
     } catch (error) {
       console.error(error)
-      if (error instanceof AxiosError) {
+      if (isAxiosError(error)) {
         toast.error(error.response?.data.message)
       }
     }
@@ -135,6 +140,8 @@ export function ProductForm({ product }: ProductFormProps) {
         initialImage={initialProductImage.current}
         onSelect={setProductImage}
         imageClassName="rounded-[20px]"
+        optionalBackgroundText="Selecione a imagem do produto"
+        removeButtonPosition="left"
       />
       {/* Form */}
       <section className="flex w-full flex-col gap-6 rounded-[20px] bg-white p-6">
@@ -148,9 +155,7 @@ export function ProductForm({ product }: ProductFormProps) {
 
         {/* Fields */}
         <form
-          onSubmit={handleSubmit(handleSaveProduct, (data) => {
-            console.log('DATA:', data)
-          })}
+          onSubmit={handleSubmit(handleSaveProduct)}
           className="flex w-full flex-col gap-5"
           noValidate
         >
@@ -158,7 +163,7 @@ export function ProductForm({ product }: ProductFormProps) {
             <FormField labelFor="title" labelText="Título" error={errors.title}>
               <Input
                 id="title"
-                placeholder="Título"
+                placeholder="Nome do produto"
                 type="text"
                 {...register('title')}
               />

@@ -8,6 +8,8 @@ interface FileInputProps {
   className?: string
   imageClassName?: string
   initialImage?: string
+  optionalBackgroundText?: string
+  removeButtonPosition?: 'right' | 'left'
 }
 
 export function FileInput({
@@ -15,6 +17,8 @@ export function FileInput({
   onSelect,
   initialImage,
   imageClassName,
+  optionalBackgroundText,
+  removeButtonPosition = 'right',
 }: FileInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -30,6 +34,14 @@ export function FileInput({
     if (file) {
       setSelectedFile(file)
       onSelect(file)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null)
+    onSelect(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '' // limpa o input para permitir reselecionar o mesmo arquivo
     }
   }
 
@@ -60,6 +72,13 @@ export function FileInput({
               imageClassName,
             )}
           />
+        ) : optionalBackgroundText ? (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <ImageUp className="h-8 w-8 text-orange-base" />
+            <span className="max-w-40 text-center text-body-sm text-gray-300">
+              {optionalBackgroundText}
+            </span>
+          </div>
         ) : (
           <ImageUp className="h-8 w-8 text-orange-base" />
         )}
@@ -83,8 +102,12 @@ export function FileInput({
 
       {selectedFile && (
         <div
-          className="absolute -right-8 top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:bg-gray-100/20"
-          onClick={() => setSelectedFile(null)}
+          className={cn(
+            'absolute top-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full hover:bg-gray-100/20',
+            removeButtonPosition === 'right' && '-right-8',
+            removeButtonPosition === 'left' && '-left-8',
+          )}
+          onClick={handleRemoveImage}
         >
           <CircleX className="h-4 w-4 text-gray-200" />
         </div>

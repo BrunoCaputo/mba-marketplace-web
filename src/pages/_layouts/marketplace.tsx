@@ -56,7 +56,7 @@ export function MarketPlaceLayout() {
     <div className="flex min-h-screen flex-col bg-surface font-ff-poppins">
       <Header seller={seller ?? null} />
 
-      <main className="mx-auto h-full w-[1030px] max-w-[1030px] flex-1 overflow-auto py-16">
+      <main className="mx-auto h-full w-[1030px] max-w-[1030px] flex-1 overflow-visible py-16">
         <Outlet />
       </main>
     </div>

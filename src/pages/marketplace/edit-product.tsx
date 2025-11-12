@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { ArrowLeft, Ban, Check } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import { ProductStatus } from '@/@types/product'
 import { getProductById, updateProductStatus } from '@/api/marketplace/products'
@@ -23,7 +25,7 @@ export function EditProductPage() {
     },
   })
 
-  const { mutateAsync: markAsSold } = useMutation({
+  const { mutateAsync: updateProductStatusFn } = useMutation({
     mutationFn: updateProductStatus,
   })
 
@@ -32,8 +34,33 @@ export function EditProductPage() {
   }
 
   async function handleMarkAsSold() {
-    await markAsSold({ id: product!.id, status: ProductStatus.sold })
-    await refetch()
+    try {
+      await updateProductStatusFn({
+        id: product!.id,
+        status: ProductStatus.sold,
+      })
+      await refetch()
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(
+          error.response?.data.message ?? 'Erro ao marcar como vendido',
+        )
+      }
+    }
+  }
+
+  async function handleDisableAd() {
+    try {
+      await updateProductStatusFn({
+        id: product!.id,
+        status: ProductStatus.cancelled,
+      })
+      await refetch()
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message ?? 'Erro ao cancelar anúncio')
+      }
+    }
   }
 
   if (!product) {
@@ -56,7 +83,9 @@ export function EditProductPage() {
           <TextButton onClick={handleMarkAsSold} icon={<Check />}>
             Marcar como vendido
           </TextButton>
-          <TextButton icon={<Ban />}>Desativar anúncio</TextButton>
+          <TextButton onClick={handleDisableAd} icon={<Ban />}>
+            Desativar anúncio
+          </TextButton>
         </div>
       </div>
 
