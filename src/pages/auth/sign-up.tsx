@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { ArrowRight, Lock, Mail, Phone, User } from 'lucide-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -13,6 +13,7 @@ import { signUp, SignUpBody } from '@/api/auth/sign-up'
 import { FileInput } from '@/components/file-input'
 import { FormField } from '@/components/form-field'
 import { PasswordInput } from '@/components/password-input'
+import { PhoneInput } from '@/components/phone-input'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
@@ -47,6 +48,7 @@ export function SignUpPage() {
   const [profilePicture, setProfilePicture] = useState<File | null>(null)
 
   const {
+    control,
     handleSubmit,
     register,
     formState: { isSubmitting, errors },
@@ -126,11 +128,16 @@ export function SignUpPage() {
                 error={errors.phone}
                 prefixIcon={<Phone />}
               >
-                <Input
-                  id="phone"
-                  placeholder="(00) 00000-0000"
-                  type="tel"
-                  {...register('phone')}
+                <Controller
+                  control={control}
+                  name="phone"
+                  render={({ field }) => (
+                    <PhoneInput
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="(00) 00000-0000"
+                    />
+                  )}
                 />
               </FormField>
             </section>
